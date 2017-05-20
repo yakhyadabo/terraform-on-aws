@@ -7,7 +7,7 @@
 resource "aws_security_group" "bastion" {
     name = "bastion"
     description = "Allow access from allowed_network to SSH/Consul, and NAT internal traffic"
-    vpc_id = "${aws_vpc.test.id}"
+    vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
 
     # SSH
     ingress = {
@@ -50,7 +50,7 @@ resource "aws_security_group" "bastion" {
 resource "aws_security_group" "allow_bastion" {
     name = "allow_bastion_ssh"
     description = "Allow access from bastion host"
-    vpc_id = "${aws_vpc.test.id}"
+    vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
     ingress {
         from_port = 0
         to_port = 65535
@@ -81,8 +81,4 @@ resource "aws_instance" "bastion" {
         role = "bastion"
         environment = "test"
     }
-}
-
-output "bastion" {
-    value = "${aws_instance.bastion.public_ip}"
 }

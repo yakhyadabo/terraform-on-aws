@@ -5,3 +5,7 @@ output "bastion_id" {
 output "bastion_name" {
   value = "${module.bastion.name}"
 }
+
+output "bastion_ip" {
+  value = "${module.bastion.ip}"
+}
