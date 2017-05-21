@@ -4,6 +4,18 @@
 # This box also acts as a NAT for the private network
 ##
 
+##
+# Remote state
+##
+data "terraform_remote_state" "dmz" {
+    backend = "s3"
+    config {
+        bucket = "terraform-remote-state-for-bastion"
+        key = "network/dmz/terraform.tfstate"
+        region = "us-west-2"
+    }
+}
+
 resource "aws_security_group" "bastion" {
     name = "bastion"
     description = "Allow access from allowed_network to SSH/Consul, and NAT internal traffic"
@@ -71,7 +83,7 @@ resource "aws_instance" "bastion" {
     security_groups = [
         "${aws_security_group.bastion.id}"
     ]
-    subnet_id = "${aws_subnet.dmz.id}"
+    subnet_id = "${data.terraform_remote_state.dmz.subnet_id}"
     associate_public_ip_address = true
     source_dest_check = false
 #   user_data = "${file(\"files/bastion/cloud-init.txt\")}"
