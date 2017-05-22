@@ -9,3 +9,7 @@ output "bastion_name" {
 output "bastion_ip" {
   value = "${module.bastion.ip}"
 }
+
+output "bastion_sg" {
+  value = "${module.bastion.sg}"
+}
