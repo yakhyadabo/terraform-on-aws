@@ -5,13 +5,49 @@
 ##
 
 ##
-# Remote state
+# Remote state of VPC
+##
+data "terraform_remote_state" "vpc" {
+    backend = "s3"
+    config {
+        bucket = "terraform-remote-state-for-bastion"
+        key = "vpc/terraform.tfstate"
+        region = "us-west-2"
+    }
+}
+
+##
+# Remote state of DMZ
 ##
 data "terraform_remote_state" "dmz" {
     backend = "s3"
     config {
         bucket = "terraform-remote-state-for-bastion"
         key = "network/dmz/terraform.tfstate"
+        region = "us-west-2"
+    }
+}
+
+##
+# Remote state of private network
+##
+data "terraform_remote_state" "private" {
+    backend = "s3"
+    config {
+        bucket = "terraform-remote-state-for-bastion"
+        key = "network/private/terraform.tfstate"
+        region = "us-west-2"
+    }
+}
+
+##
+# Remote state of public netqork
+##
+data "terraform_remote_state" "public" {
+    backend = "s3"
+    config {
+        bucket = "terraform-remote-state-for-bastion"
+        key = "network/public/terraform.tfstate"
         region = "us-west-2"
     }
 }
@@ -45,18 +81,18 @@ resource "aws_security_group" "bastion" {
 #        cidr_blocks = [ "${var.allowed_network}" ]
 #        self = false
 #    }
-
-    # NAT
-    ingress {
-        from_port = 0
-        to_port = 65535
-        protocol = "tcp"
-        cidr_blocks = [
-            "${aws_subnet.public.cidr_block}",
-            "${aws_subnet.private.cidr_block}"
-        ]
-        self = false
-    }
+#
+#    # NAT
+#    ingress {
+#        from_port = 0
+#        to_port = 65535
+#        protocol = "tcp"
+#        cidr_blocks = [
+#            "${data.terraform_remote_state.private.subnet_id}",
+#            "${data.terraform_remote_state.public.subnet_id}"
+#        ]
+#        self = false
+#    }
 }
 
 resource "aws_security_group" "allow_bastion" {
