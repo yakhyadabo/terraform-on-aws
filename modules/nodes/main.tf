@@ -1,4 +1,3 @@
-##
 # Create a bastion host to allow SSH in to the test network.
 # Connections are only allowed from ${var.allowed_network}
 # This box also acts as a NAT for the private network
@@ -12,30 +11,6 @@ data "terraform_remote_state" "vpc" {
     config {
         bucket = "terraform-remote-state-for-bastion"
         key = "vpc/terraform.tfstate"
-        region = "us-west-2"
-    }
-}
-
-##
-# Remote state of Bastion
-##
-data "terraform_remote_state" "bastion" {
-    backend = "s3"
-    config {
-        bucket = "terraform-remote-state-for-bastion"
-        key = "bastion/terraform.tfstate"
-        region = "us-west-2"
-    }
-}
-
-##
-# Remote state of private network
-##
-data "terraform_remote_state" "private" {
-    backend = "s3"
-    config {
-        bucket = "terraform-remote-state-for-bastion"
-        key = "network/private/terraform.tfstate"
         region = "us-west-2"
     }
 }
@@ -84,8 +59,6 @@ resource "aws_security_group" "node" {
 }
 
 resource "aws_instance" "node" {
-    # depends_on = [ "aws_instance.bastion" ]
-    # depends_on = ["${data.terraform_remote_state.bastion.bastion_id}"]
     connection {
         user = "ec2-user"
         key_file = "${var.key_path}"
@@ -95,10 +68,10 @@ resource "aws_instance" "node" {
     count = 3
     key_name = "${var.key_name}"
     security_groups = [
-        "${data.terraform_remote_state.bastion.bastion_sg}",
+        "${data.terraform_remote_state.vpc.bastion_sg}",
         "${aws_security_group.node.id}"
     ]
-    subnet_id =  "${data.terraform_remote_state.private.subnet_id}"
+    subnet_id =  "${data.terraform_remote_state.vpc.private_network_id}"
     private_ip = "10.0.1.1${count.index}"
     tags = {
         Name = "node-${count.index}"
