@@ -15,9 +15,9 @@ data "terraform_remote_state" "vpc" {
     }
 }
 
-resource "aws_security_group" "node" {
-    name = "node"
-    description = "node ....."
+resource "aws_security_group" "app_host" {
+    name = "app_host"
+    description = "app_host ....."
     vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
 
     ingress {
@@ -58,7 +58,7 @@ resource "aws_security_group" "node" {
     }
 }
 
-resource "aws_instance" "node" {
+resource "aws_instance" "app_host" {
     connection {
         user = "ec2-user"
         key_file = "${var.key_path}"
@@ -69,12 +69,12 @@ resource "aws_instance" "node" {
     key_name = "${var.key_name}"
     security_groups = [
         "${data.terraform_remote_state.vpc.bastion_sg}",
-        "${aws_security_group.node.id}"
+        "${aws_security_group.app_host.id}"
     ]
     subnet_id =  "${data.terraform_remote_state.vpc.private_network_id}"
     private_ip = "10.0.1.1${count.index}"
     tags = {
-        Name = "node-${count.index}"
+        Name = "app_host-${count.index}"
         subnet = "private"
         role = "dns"
         environment = "test"
