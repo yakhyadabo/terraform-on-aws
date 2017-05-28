@@ -11,7 +11,7 @@ data "terraform_remote_state" "vpc" {
     config {
         bucket = "terraform-remote-state-for-bastion"
         key = "vpc/terraform.tfstate"
-        region = "us-west-2"
+        region = "${var.region}"
     }
 }
 
