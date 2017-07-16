@@ -44,7 +44,8 @@ resource "aws_route_table" "public" {
     vpc_id = "${aws_vpc.test.id}"
     route {
         cidr_block = "0.0.0.0/0"
-        instance_id = "${aws_instance.bastion.id}"
+        # instance_id = "${aws_instance.bastion.id}"
+        gateway_id = "${aws_internet_gateway.gateway.id}"
     }
 }
 
