@@ -10,3 +10,7 @@ variable "allowed_network" {
     description = "The CIDR of network that is allowed to access the bastion host"
 }
 
+variable "key_path" {
+    description = "Path to your private key."
+    default = "~/.ssh/id_rsa"
+}
