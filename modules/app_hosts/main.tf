@@ -9,7 +9,7 @@
 data "terraform_remote_state" "vpc" {
     backend = "s3"
     config {
-        bucket = "terraform-remote-state-for-bastion"
+        bucket = "terraform-remote-state-zeta"
         key = "vpc/terraform.tfstate"
         region = "${var.region}"
     }
