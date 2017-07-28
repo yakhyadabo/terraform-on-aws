@@ -1,0 +1,10 @@
+#cloud-config
+## Cloud config for application servers 
+#
+runcmd:
+  - sudo yum install epel-release
+  - sudo yum install ansible > /tmp/ansible.log
+
+# Install docker
+  - curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+
