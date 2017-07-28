@@ -12,7 +12,7 @@ destroy:
 bastion-remote-config: 
 	@terraform remote config \
 		-backend=s3 \
-		-backend-config="bucket=terraform-remote-state-for-bastion" \
+		-backend-config="bucket=terraform-remote-state-zeta" \
 		-backend-config="key=app_hosts/terraform.tfstate" \
 		-backend-config="region=us-west-2" \
 		-backend-config="encrypt=true"
