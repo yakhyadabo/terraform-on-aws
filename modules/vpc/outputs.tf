@@ -11,7 +11,8 @@ output "bastion_ip" {
 }
 
 output "bastion_sg"{
-  value = "${aws_security_group.allow_bastion.id}"
+  value = "${aws_security_group.bastion.id}"
+  #value = "${aws_security_group.allow_bastion.id}"
 }
 
 output "private_network_id" {

@@ -5,6 +5,24 @@ resource "aws_vpc" "test" {
     cidr_block = "10.0.0.0/16"
 }
 
+resource "aws_vpc_endpoint" "private-s3" {
+    vpc_id = "${aws_vpc.test.id}"
+    route_table_ids = ["${aws_route_table.public.id}"]
+    service_name = "com.amazonaws.us-west-2.s3"
+    policy = <<POLICY
+  {
+    "Statement": [
+        {
+            "Action": "*",
+            "Effect": "Allow",
+            "Resource": "*",
+            "Principal": "*"
+        }
+    ]
+  }
+  POLICY
+}
+
 resource "aws_internet_gateway" "gateway" {
     vpc_id = "${aws_vpc.test.id}"
 }
@@ -16,6 +34,7 @@ resource "aws_internet_gateway" "gateway" {
 resource "aws_subnet" "dmz" {
     vpc_id = "${aws_vpc.test.id}"
     cidr_block = "10.0.201.0/24"
+    map_public_ip_on_launch = true
 }
 
 resource "aws_route_table" "dmz" {
@@ -38,6 +57,7 @@ resource "aws_route_table_association" "dmz" {
 resource "aws_subnet" "public" {
     vpc_id = "${aws_vpc.test.id}"
     cidr_block = "10.0.0.0/24"
+    map_public_ip_on_launch = true
 }
 
 resource "aws_route_table" "public" {
