@@ -100,7 +100,7 @@ resource "aws_instance" "bastion" {
     connection {
         user = "ec2-user"
     }
-    ami = "${lookup(var.amazon_nat_amis, var.region)}"
+    ami = "${lookup(var.centos7_amis, var.region)}"
     instance_type = "t2.micro"
     key_name = "${var.key_name}"
     security_groups = [

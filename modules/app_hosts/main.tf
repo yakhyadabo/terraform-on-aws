@@ -63,7 +63,7 @@ resource "aws_instance" "app_host" {
         user = "ec2-user"
         key_file = "${var.key_path}"
     }
-    ami = "${lookup(var.amazon_amis, var.region)}"
+    ami = "${lookup(var.centos7_amis, var.region)}"
     instance_type = "t2.micro"
     count = 3
     key_name = "${var.key_name}"

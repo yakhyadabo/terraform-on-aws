@@ -81,7 +81,7 @@ resource "aws_instance" "cfgmt" {
         user = "ec2-user"
         key_file = "${var.key_path}"
     }
-    ami = "${lookup(var.amazon_amis, var.region)}"
+    ami = "${lookup(var.centos7_amis, var.region)}"
     instance_type = "t2.micro"
     user_data = "${file("cloud-config/app.yml")}"
    # user_data = <<-EOF
