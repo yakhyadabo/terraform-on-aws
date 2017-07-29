@@ -98,7 +98,7 @@ resource "aws_security_group" "web" {
 
 resource "aws_instance" "bastion" {
     connection {
-        user = "ec2-user"
+        user = "centos"
     }
     ami = "${lookup(var.centos7_amis, var.region)}"
     instance_type = "t2.micro"
