@@ -6,9 +6,9 @@ output "bastion_ip" {
     value = "${module.vpc.bastion_ip}"
 }
 
-output "bastion_sg" {
-    value = "${module.vpc.bastion_sg}"
-}
+# output "bastion_sg" {
+#     value = "${module.vpc.bastion_sg}"
+# }
 
 output "gateway_id" {
   value = "${module.vpc.gateway}"
