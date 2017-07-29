@@ -78,7 +78,7 @@ resource "aws_security_group" "cfgmt_nat" {
 
 resource "aws_instance" "cfgmt" {
     connection {
-        user = "ec2-user"
+        user = "centos"
         key_file = "${var.key_path}"
     }
     ami = "${lookup(var.centos7_amis, var.region)}"
