@@ -35,3 +35,7 @@ variable "centos7_amis" {
         sa-east-1 = "ami-bf9520a2"
     }
 }
+
+variable "depends_on" { default = [], type = "list" }
+variable "vpc_id" {description =  "VPC ID" }
+variable "subnet_id" {description =  "SUBNET ID"}

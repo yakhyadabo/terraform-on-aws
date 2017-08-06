@@ -5,7 +5,7 @@ data "terraform_remote_state" "vpc" {
     backend = "s3"
     config {
         bucket = "terraform-remote-state-zeta"
-        key = "vpc/terraform.tfstate"
+        key = "dev/terraform.tfstate"
         region = "${var.region}"
     }
 }
@@ -14,7 +14,8 @@ data "terraform_remote_state" "vpc" {
 resource "aws_security_group" "cfgmt_web" {
   name = "cfgmt_web"
   description = "Security group for web that allows web traffic from internet"
-  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
+  # vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
+    vpc_id = "${var.vpc_id}"
 
  ingress {
     from_port   = "0"
@@ -39,7 +40,8 @@ resource "aws_security_group" "cfgmt_web" {
 resource "aws_security_group" "cfgmt_nat" {
     name = "cfgmt_nat"
     description = "Config management ....."
-    vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
+    # vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
+    vpc_id = "${var.vpc_id}"
 
 
   ingress {
@@ -96,7 +98,8 @@ resource "aws_instance" "cfgmt" {
         "${aws_security_group.cfgmt_nat.id}",
         "${aws_security_group.cfgmt_web.id}"
     ]
-    subnet_id =  "${data.terraform_remote_state.vpc.public_network_id}"
+   # subnet_id =  "${data.terraform_remote_state.vpc.public_network_id}"
+    subnet_id =  "${var.subnet_id}"
     private_ip = "10.0.0.10"
     tags = {
         Name = "cfgmt"
