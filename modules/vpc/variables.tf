@@ -30,3 +30,6 @@ variable "centos7_amis" {
         sa-east-1 = "ami-bf9520a2"
     }
 }
+
+variable "sg_default" {description =  "Default Security Group" }
+variable "sg_nat" {description =  "Nat Security Group" }
