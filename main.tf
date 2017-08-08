@@ -14,6 +14,7 @@ module "cfgmt" {
 
   vpc_id = "${module.vpc.id}"
   subnet_id = "${module.vpc.public_network_id}"
+  sg_web = "${module.sec-group.sg_web}"
 }
 
 module "sec-group" {

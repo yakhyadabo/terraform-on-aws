@@ -1,28 +1,3 @@
-/* Security group for the web */
-resource "aws_security_group" "cfgmt_web" {
-  name = "cfgmt_web"
-  description = "Security group for web that allows web traffic from internet"
-    vpc_id = "${var.vpc_id}"
-
- ingress {
-    from_port   = "0"
-    to_port     = "0"
-    protocol    = "-1"
-    self        = true
-  }
-
-  egress {
-    from_port   = "0"
-    to_port     = "0"
-    protocol    = "-1"
-    self        = true
-  }
-
-  tags { 
-    Name = "web-airpair-example" 
-  }
-}
-
 # Nat SG : 
 resource "aws_security_group" "cfgmt_nat" {
     name = "cfgmt_nat"
@@ -80,9 +55,8 @@ resource "aws_instance" "cfgmt" {
     count = 1
     key_name = "${var.key_name}"
     security_groups = [
-       # "${data.terraform_remote_state.vpc.bastion_sg}",
         "${aws_security_group.cfgmt_nat.id}",
-        "${aws_security_group.cfgmt_web.id}"
+        "${var.sg_web}"
     ]
     subnet_id =  "${var.subnet_id}"
     private_ip = "10.0.0.10"
