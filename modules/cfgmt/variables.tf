@@ -36,7 +36,6 @@ variable "centos7_amis" {
     }
 }
 
-variable "depends_on" { default = [], type = "list" }
 variable "vpc_id" {description =  "VPC ID" }
 variable "subnet_id" {description =  "SUBNET ID"}
 variable "sg_web" {description =  "Web Security Group"}
