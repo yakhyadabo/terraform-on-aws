@@ -1,6 +1,7 @@
 resource "aws_instance" "bastion" {
     connection {
         user = "centos"
+        key_file = "${var.key_path}"
     }
     ami = "${lookup(var.centos7_amis, var.region)}"
     instance_type = "t2.micro"
