@@ -4,7 +4,6 @@ resource "aws_security_group" "cfgmt_nat" {
     description = "Config management ....."
     vpc_id = "${var.vpc_id}"
 
-
   ingress {
     from_port = 22
     to_port   = 22
@@ -33,18 +32,18 @@ resource "aws_security_group" "cfgmt_nat" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-
   tags { 
     Name = "nat-airpair-example" 
   }
 }
 
-resource "aws_instance" "cfgmt" {
+resource "aws_launch_configuration" "cfgmt" {
     connection {
         user = "centos"
         key_file = "${var.key_path}"
     }
-    ami = "${lookup(var.centos7_amis, var.region)}"
+    key_name = "${var.key_name}"
+    image_id = "${lookup(var.centos7_amis, var.region)}"
     instance_type = "t2.micro"
     user_data = "${file("cloud-config/app.yml")}"
    # user_data = <<-EOF
@@ -52,19 +51,78 @@ resource "aws_instance" "cfgmt" {
    #           sudo yum install epel-release
    #           sudo yum install ansible > /tmp/ansible.log
    #           EOF
-    count = 1
-    key_name = "${var.key_name}"
-    security_groups = [
-        "${aws_security_group.cfgmt_nat.id}",
-        "${var.sg_web}"
-    ]
-    subnet_id =  "${var.subnet_id}"
-    private_ip = "10.0.0.10"
-    tags = {
-        Name = "cfgmt"
-        subnet = "public"
-        role = "dns"
-        environment = "test"
-    }
+    # count = 1
+    security_groups = [ "${aws_security_group.cfgmt_nat.id}", "${var.sg_web}" ]
+    # subnet_id =  "${var.subnet_id}"
+    # private_ip = "10.0.0.10"
+   #  tags = {
+   #      Name = "cfgmt"
+   #      subnet = "public"
+   #      role = "dns"
+   #      environment = "test"
+   #  }
 
+    lifecycle {
+        create_before_destroy = true
+    }
+}
+
+data "aws_availability_zones" "all" {}
+
+resource "aws_autoscaling_group" "cfgmt" {
+  launch_configuration = "${aws_launch_configuration.cfgmt.id}"
+  # availability_zones = ["${data.aws_availability_zones.all.names}"]
+  load_balancers = ["${aws_elb.cfgmt.name}"]
+  vpc_zone_identifier = ["${var.subnet_id}"]
+
+  min_size = 2
+  max_size = 10
+  tag {
+    key = "Name"
+    value = "terraform-asg-cfgmt"
+    propagate_at_launch = true
+  }
+}
+
+resource "aws_elb" "cfgmt" {
+  name = "terraform-asg-cfgmt"
+  security_groups = ["${aws_security_group.elb.id}"]
+  # availability_zones = ["${data.aws_availability_zones.all.names}"]
+  subnets = ["${var.subnet_id}"]
+  
+  health_check {
+    healthy_threshold = 2
+    unhealthy_threshold = 2
+    timeout = 3
+    interval = 30
+    target = "HTTP:80/"
+    # target = "HTTP:${var.server_port}/"
+  }
+  listener {
+    lb_port = 80
+    lb_protocol = "http"
+    instance_port = "80"
+    # instance_port = "${var.server_port}"
+    instance_protocol = "http"
+  }
+}
+
+
+resource "aws_security_group" "elb" {
+  name = "terraform-cfgmt-elb"
+  vpc_id = "${var.vpc_id}"
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
