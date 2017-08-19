@@ -38,15 +38,13 @@ resource "aws_elb" "cfgmt" {
     unhealthy_threshold = 2
     timeout = 3
     interval = 30
-    target = "HTTP:80/"
-    # target = "HTTP:${var.server_port}/"
+    target = "HTTP:${var.server_port}/"
   }
 
   listener {
     lb_port = 80
     lb_protocol = "http"
-    instance_port = "80"
-    # instance_port = "${var.server_port}"
+    instance_port = "${var.server_port}"
     instance_protocol = "http"
   }
 }

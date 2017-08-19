@@ -45,3 +45,8 @@ variable "max_instances_size" {description = "maximum running instances"}
 
 variable "public_elb_sec_group" {description = "Public ELB Security Group" }
 variable "bastion_host_ssh_sec_group" {description = "Security Group that allows SSH from bastion host" }
+
+variable "server_port" {
+  description = "Port exposed by ELB"
+  default = "80"
+}
