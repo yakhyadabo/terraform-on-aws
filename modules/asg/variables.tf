@@ -40,5 +40,8 @@ variable "vpc_id" {description =  "VPC ID" }
 variable "subnet_id" {description =  "SUBNET ID"}
 variable "sg_web" {description =  "Web Security Group"}
 
+variable "min_instances_size" {description = "minimum running instances"}
+variable "max_instances_size" {description = "maximum running instances"}
+
 variable "public_elb_sec_group" {description = "Public ELB Security Group" }
 variable "bastion_host_ssh_sec_group" {description = "Security Group that allows SSH from bastion host" }

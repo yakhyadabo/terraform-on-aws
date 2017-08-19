@@ -19,8 +19,8 @@ resource "aws_autoscaling_group" "cfgmt" {
   launch_configuration = "${aws_launch_configuration.cfgmt.id}"
   load_balancers = ["${aws_elb.cfgmt.name}"]
   vpc_zone_identifier = ["${var.subnet_id}"]
-  min_size = 2
-  max_size = 10
+  min_size = "${var.min_instances_size}"
+  max_size = "${var.max_instances_size}"
   tag {
     key = "Name"
     value = "terraform-asg-cfgmt"
