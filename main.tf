@@ -13,14 +13,6 @@ module "vpc" {
   sg_nat = "${module.sec-group.sg_nat}"
 }
 
-## module "cfgmt" {
-##   source = "modules/cfgmt"
-## 
-##   vpc_id = "${module.vpc.id}"
-##   subnet_id = "${module.vpc.public_network_id}"
-##   sg_web = "${module.sec-group.sg_web}"
-## }
-
 module "cfgmt" {
   source = "modules/asg"
 
