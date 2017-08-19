@@ -23,6 +23,25 @@ resource "aws_security_group" "default" {
   }
 }
 
+resource "aws_security_group" "public_elb" {
+  name = "terraform-cfgmt-elb"
+  vpc_id = "${var.vpc_id}"
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_security_group" "nat" {
   name = "nat-sg"
   description = "Allow access from allowed_network to SSH/Consul, and NAT internal traffic"

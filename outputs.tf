@@ -21,3 +21,9 @@ output "private_network_id" {
 output "public_network_id" {
   value = "${module.vpc.public_network_id}"
 }
+
+output "public_elb_sec_group" {
+  value = "${module.sec-group.public_elb_sec_group}"
+}
+
+
