@@ -15,14 +15,10 @@ resource "aws_launch_configuration" "cfgmt" {
     }
 }
 
-data "aws_availability_zones" "all" {}
-
 resource "aws_autoscaling_group" "cfgmt" {
   launch_configuration = "${aws_launch_configuration.cfgmt.id}"
-  # availability_zones = ["${data.aws_availability_zones.all.names}"]
   load_balancers = ["${aws_elb.cfgmt.name}"]
   vpc_zone_identifier = ["${var.subnet_id}"]
-
   min_size = 2
   max_size = 10
   tag {
@@ -35,7 +31,6 @@ resource "aws_autoscaling_group" "cfgmt" {
 resource "aws_elb" "cfgmt" {
   name = "terraform-asg-cfgmt"
   security_groups = ["${var.public_elb_sec_group}"]
-  # availability_zones = ["${data.aws_availability_zones.all.names}"]
   subnets = ["${var.subnet_id}"]
   
   health_check {
