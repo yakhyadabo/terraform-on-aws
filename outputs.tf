@@ -26,4 +26,7 @@ output "public_elb_sec_group" {
   value = "${module.sec-group.public_elb_sec_group}"
 }
 
+output "bastion_host_ssh" {
+  value = "${module.sec-group.bastion_host_ssh}"
+}
 

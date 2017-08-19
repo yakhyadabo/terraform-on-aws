@@ -1,42 +1,3 @@
-# Nat SG : 
-resource "aws_security_group" "cfgmt_nat" {
-    name = "cfgmt_nat"
-    description = "Config management ....."
-    vpc_id = "${var.vpc_id}"
-
-  ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-    cidr_blocks = ["10.0.201.0/24"]
-  }
-
-  ingress {
-    from_port = 1194
-    to_port   = 1194
-    protocol  = "udp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port = 443
-    to_port   = 443
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags { 
-    Name = "nat-airpair-example" 
-  }
-}
-
 resource "aws_launch_configuration" "cfgmt" {
     connection {
         user = "centos"
@@ -47,7 +8,7 @@ resource "aws_launch_configuration" "cfgmt" {
     image_id = "${lookup(var.centos7_amis, var.region)}"
     instance_type = "t2.micro"
     user_data = "${file("cloud-config/app.yml")}"
-    security_groups = [ "${aws_security_group.cfgmt_nat.id}", "${var.sg_web}" ]
+    security_groups = [ "${var.bastion_host_ssh_sec_group}", "${var.sg_web}" ]
 
     lifecycle {
         create_before_destroy = true

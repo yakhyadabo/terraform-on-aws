@@ -29,6 +29,7 @@ module "cfgmt" {
   sg_web = "${module.sec-group.sg_web}"
 
   public_elb_sec_group = "${module.sec-group.public_elb_sec_group}"
+  bastion_host_ssh_sec_group = "${module.sec-group.bastion_host_ssh}"
 }
 
 module "sec-group" {

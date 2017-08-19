@@ -13,3 +13,7 @@ output "sg_web" {
 output "public_elb_sec_group" {
   value = "${aws_security_group.public_elb.id}"
 }
+
+output "bastion_host_ssh" {
+  value = "${aws_security_group.bastion_host_ssh.id}"
+}
