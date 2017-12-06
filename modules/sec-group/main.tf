@@ -44,7 +44,7 @@ resource "aws_security_group" "public_elb" {
 
 resource "aws_security_group" "nat" {
   name = "nat-sg"
-  description = "Allow access from allowed_network to SSH/Consul, and NAT internal traffic"
+  description = "Allow access from allowed_network to SSH and NAT internal traffic"
   vpc_id = "${var.vpc_id}"
 
   # SSH
@@ -63,12 +63,12 @@ resource "aws_security_group" "nat" {
       cidr_blocks = ["${var.allowed_network}"]
   }
 
-  ingress {
-    from_port = 1194
-    to_port   = 1194
-    protocol  = "udp"
-    cidr_blocks = ["${var.allowed_network}"]
-  }
+  ## ingress { ## OpenVPN
+  ##   from_port = 1194
+  ##   to_port   = 1194
+  ##   protocol  = "udp"
+  ##   cidr_blocks = ["${var.allowed_network}"]
+  ## }
 
   egress {
     from_port = 80
@@ -90,34 +90,34 @@ resource "aws_security_group" "nat" {
 
 }
 
-# Nat SG : 
+# Bation SG : 
 resource "aws_security_group" "bastion_host_ssh" {
     name = "bastion_host_ssh"
-    description = "SSH from bastion host"
+    description = "Security Group that alows SSH from bastion host"
     vpc_id = "${var.vpc_id}"
 
   ingress {
     from_port = 22
     to_port   = 22
     protocol  = "tcp"
-    cidr_blocks = ["10.0.201.0/24"]
+    cidr_blocks = ["10.0.201.0/24"] ## Bation host IP
   }
 
-  ingress {
-    from_port = 1194
-    to_port   = 1194
-    protocol  = "udp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  ## ingress { # OpenVPN
+  ##   from_port = 1194 
+  ##   to_port   = 1194
+  ##   protocol  = "udp"
+  ##   cidr_blocks = ["0.0.0.0/0"]
+  ## }
 
-  egress {
+  egress { ## Enable curl http
     from_port = 80
     to_port   = 80
     protocol  = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  egress {
+  egress { ## Enable curl httpS
     from_port = 443
     to_port   = 443
     protocol  = "tcp"
@@ -137,14 +137,14 @@ resource "aws_security_group" "web" {
   description = "Security group for web that allows web traffic from internet"
   vpc_id = "${var.vpc_id}"
 
-  ingress {
-    from_port = 80
-    to_port   = 80
+  ingress { # HTTP
+    from_port = 8080
+    to_port   = 8080
     protocol  = "tcp"
     cidr_blocks = ["${var.allowed_network}"]
   }
 
-  ingress {
+  ingress { ## WEB over SSL (HTTPS)
     from_port = 443
     to_port   = 443
     protocol  = "tcp"
