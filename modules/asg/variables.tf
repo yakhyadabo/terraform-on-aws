@@ -54,5 +54,5 @@ variable "bastion_host_ssh_sec_group" {description = "Security Group that allows
 
 variable "server_port" {
   description = "Port exposed by ELB"
-  default = "80"
+  default = "8080"
 }

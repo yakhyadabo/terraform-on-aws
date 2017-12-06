@@ -44,7 +44,17 @@ resource "aws_elb" "cfgmt" {
   listener {
     lb_port = 80
     lb_protocol = "http"
+
     instance_port = "${var.server_port}"
     instance_protocol = "http"
   }
+
+  ## listener {
+  ##   lb_port = 443
+  ##   lb_protocol = "https"
+  ##   ssl_certificate_id = "arn:aws:iam::123456789012:server-certificate/certName"
+
+  ##   instance_port = "${var.server_port}"
+  ##   instance_protocol = "http"
+  ## }
 }

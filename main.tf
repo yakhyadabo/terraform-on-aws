@@ -22,6 +22,7 @@ module "cfgmt" {
 
   # min_instances_size = 5
   # max_instances_size = 10
+  # server_port = 8080
   public_elb_sec_group = "${module.sec-group.public_elb_sec_group}"
   bastion_host_ssh_sec_group = "${module.sec-group.bastion_host_ssh}"
 }
