@@ -26,3 +26,7 @@ output "bastion_host_ssh" {
   value = "${module.sec-group.bastion_host_ssh}"
 }
 
+output "cfgmt_dns_name" {
+  value = "${module.cfgmt.cfgmt_dns_name}"
+}
+
