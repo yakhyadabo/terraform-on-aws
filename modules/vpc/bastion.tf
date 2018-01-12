@@ -1,7 +1,8 @@
 resource "aws_instance" "bastion" {
     connection {
         user = "centos"
-        key_file = "${var.key_path}"
+        # key_file = "${var.key_path}"
+        private_key = "${var.key_path}"
     }
     ami = "${lookup(var.centos7_amis, var.region)}"
     instance_type = "t2.micro"
@@ -24,6 +25,21 @@ resource "aws_instance" "bastion" {
         role = "bastion"
         environment = "test"
     }
+
+
+ provisioner "remote-exec" {
+    inline = [
+      "echo net.ipv4.ip_forward = 1 | sudo tee -a /etc/sysctl.conf",
+      "sudo sysctl -p",
+      "sudo yum -y install firewalld",
+      "sudo systemctl start firewalld && sudo systemctl enable firewalld",
+      "sudo firewall-cmd --permanent --direct --add-rule ipv4 nat POSTROUTING 0 -o ens160 -j MASQUERADE",
+      "sudo firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i ens192 -o ens160 -j ACCEPT",
+      "sudo firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i ens160 -o ens192 -m state --state RELATED,ESTABLISHED -j ACCEPT",
+      "sudo firewall-cmd --reload"
+    ]
+ }
+
 
 # provisioner "remote-exec" {
 #    inline = [
