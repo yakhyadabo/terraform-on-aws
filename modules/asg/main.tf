@@ -1,7 +1,7 @@
 resource "aws_launch_configuration" "cfgmt" {
     connection {
         user = "centos"
-        key_file = "${var.key_path}"
+        private_key = "${var.key_path}"
     }
 
     key_name = "${var.key_name}"
