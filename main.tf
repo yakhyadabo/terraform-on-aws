@@ -13,11 +13,26 @@ module "vpc" {
   sg_nat = "${module.sec-group.sg_nat}"
 }
 
-module "cfgmt" {
+## module "cfgmt" {
+##   source = "modules/asg"
+## 
+##   vpc_id = "${module.vpc.id}"
+##   subnet_id = "${module.vpc.public_network_id}"
+##   sg_web = "${module.sec-group.sg_web}"
+## 
+##   # min_instances_size = 5
+##   # max_instances_size = 10
+##   # server_port = 8080
+##   public_elb_sec_group = "${module.sec-group.public_elb_sec_group}"
+##   bastion_host_ssh_sec_group = "${module.sec-group.bastion_host_ssh}"
+## }
+
+module "internal" {
   source = "modules/asg"
 
   vpc_id = "${module.vpc.id}"
-  subnet_id = "${module.vpc.public_network_id}"
+  subnet_id = "${module.vpc.private_network_id}"
+  elb_subnet_id = "${module.vpc.public_network_id}"
   sg_web = "${module.sec-group.sg_web}"
 
   # min_instances_size = 5

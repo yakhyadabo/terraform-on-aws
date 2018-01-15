@@ -38,6 +38,7 @@ variable "centos7_amis" {
 
 variable "vpc_id" {description =  "VPC ID" }
 variable "subnet_id" {description =  "SUBNET ID"}
+variable "elb_subnet_id" {description =  "SUBNET ID"}
 variable "sg_web" {description =  "Web Security Group"}
 
 variable "min_instances_size" {

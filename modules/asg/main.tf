@@ -31,7 +31,7 @@ resource "aws_autoscaling_group" "cfgmt" {
 resource "aws_elb" "cfgmt" {
   name = "terraform-asg-cfgmt"
   security_groups = ["${var.public_elb_sec_group}"]
-  subnets = ["${var.subnet_id}"]
+  subnets = ["${var.elb_subnet_id}"]
   
   health_check {
     healthy_threshold = 2
