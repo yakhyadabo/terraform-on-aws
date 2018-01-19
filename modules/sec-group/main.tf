@@ -78,6 +78,13 @@ resource "aws_security_group" "nat" {
   }
 
   egress {
+    from_port = 8080
+    to_port   = 8080
+    protocol  = "tcp"
+    cidr_blocks = ["${var.allowed_network}"]
+  }
+
+  egress {
     from_port = 443
     to_port   = 443
     protocol  = "tcp"
@@ -115,6 +122,13 @@ resource "aws_security_group" "bastion_host_ssh" {
     to_port   = 80
     protocol  = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress { ## Test connections //TODO Remove
+    from_port = 8080
+    to_port   = 8080
+    protocol  = "tcp"
+    cidr_blocks = ["${var.allowed_network}"]
   }
 
   egress { ## Enable curl httpS
