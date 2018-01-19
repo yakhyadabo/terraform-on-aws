@@ -37,8 +37,13 @@ variable "centos7_amis" {
 }
 
 variable "vpc_id" {description =  "VPC ID" }
+variable "elb_suffix" {description =  "ELB Suffix" }
+
 variable "subnet_id" {description =  "SUBNET ID"}
-variable "elb_subnet_id" {description =  "SUBNET ID"}
+variable "elb_subnets" {
+  description =  "SUBNET ID"
+  type = "list"
+}
 variable "sg_web" {description =  "Web Security Group"}
 
 variable "min_instances_size" {
@@ -50,7 +55,10 @@ variable "max_instances_size" {
   default = "3"
 }
 
-variable "public_elb_sec_group" {description = "Public ELB Security Group" }
+variable "public_elb_sec_group" {
+  description = "Public ELB Security Group" 
+  type = "list"
+}
 variable "bastion_host_ssh_sec_group" {description = "Security Group that allows SSH from bastion host" }
 
 variable "server_port" {

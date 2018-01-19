@@ -18,6 +18,7 @@ resource "aws_launch_configuration" "cfgmt" {
 resource "aws_autoscaling_group" "cfgmt" {
   launch_configuration = "${aws_launch_configuration.cfgmt.id}"
   load_balancers = ["${aws_elb.cfgmt.name}"]
+  # vpc_zone_identifier = ["${var.elb_subnets}"]
   vpc_zone_identifier = ["${var.subnet_id}"]
   min_size = "${var.min_instances_size}"
   max_size = "${var.max_instances_size}"
@@ -29,15 +30,17 @@ resource "aws_autoscaling_group" "cfgmt" {
 }
 
 resource "aws_elb" "cfgmt" {
-  name = "terraform-asg-cfgmt"
+  name = "terraform-asg-${var.elb_suffix}"
   security_groups = ["${var.public_elb_sec_group}"]
-  subnets = ["${var.elb_subnet_id}"]
-  
+  # subnets = ["${var.subnet_id}"]
+  subnets = ["${var.elb_subnets}"]
+  # availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c"]
+
   health_check {
-    healthy_threshold = 2
-    unhealthy_threshold = 2
-    timeout = 3
-    interval = 30
+    healthy_threshold = 5
+    unhealthy_threshold = 10
+    timeout = 5
+    interval = 40
     target = "HTTP:${var.server_port}/"
   }
 
