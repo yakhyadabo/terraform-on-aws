@@ -48,7 +48,7 @@ module "internal" {
 }
 
 module "sec-group" {
-  source = "modules/sec-group"
+  source = "modules/sec_group"
 
   vpc_id = "${module.vpc.id}"
   subnet_id = "${module.vpc.public_network_id}"
