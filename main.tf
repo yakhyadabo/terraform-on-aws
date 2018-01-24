@@ -54,3 +54,10 @@ module "sec-group" {
   subnet_id = "${module.vpc.public_network_id}"
   allowed_network = "${var.allowed_network}"
 }
+
+
+module "wordpress_db" {
+  source = "modules/postgres_rds"
+
+  vpc_id = "${module.vpc.id}"
+}
