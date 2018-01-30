@@ -19,6 +19,15 @@ resource "aws_db_instance" "wordpress" {
   vpc_security_group_ids   = ["${aws_security_group.mydb1.id}"]
 }
 
+## resource "aws_route53_record" "database" {
+##   zone_id = "${aws_route53_zone.primary.zone_id}"
+##   name = "database.example.com"
+##   type = "CNAME"
+##   ttl = "300"
+##   records = ["${aws_db_instance.mydb.address}"]
+## }
+
+
 resource "aws_security_group" "mydb1" {  
   name = "mydb1"
   
@@ -33,6 +42,13 @@ resource "aws_security_group" "mydb1" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["10.0.201.0/24"] ## Bation host IP
+  }
+
   # Allow all outbound traffic.
   egress {
     from_port = 0
@@ -44,12 +60,12 @@ resource "aws_security_group" "mydb1" {
 
 resource "aws_db_subnet_group" "wordpress-pgsql" {
   name = "wordpress-pgsql"
-  subnet_ids = ["${aws_subnet.subnet_1.id}", "${aws_subnet.subnet_2.id}"]
+  subnet_ids = ["${aws_subnet.private-db1.id}", "${aws_subnet.private-db2.id}"]
 }
 
-resource "aws_subnet" "subnet_1" {
+resource "aws_subnet" "private-db1" {
   vpc_id            = "${var.vpc_id}"
-  cidr_block        = "${var.subnet_1_cidr}"
+  cidr_block        = "${var.private-db1_cidr}"
   availability_zone = "${var.az_1}"
 
   tags {
@@ -57,12 +73,30 @@ resource "aws_subnet" "subnet_1" {
   }
 }
 
-resource "aws_subnet" "subnet_2" {
+resource "aws_subnet" "private-db2" {
   vpc_id            = "${var.vpc_id}"
-  cidr_block        = "${var.subnet_2_cidr}"
+  cidr_block        = "${var.private-db2_cidr}"
   availability_zone = "${var.az_2}"
 
   tags {
     Name = "main_subnet2"
   }
+}
+
+resource "aws_route_table" "private-db" {
+    vpc_id = "${var.vpc_id}"
+   #  route {
+   #      cidr_block = "0.0.0.0/0"
+   #      instance_id = "${aws_instance.bastion.id}"
+   #  }
+}
+
+resource "aws_route_table_association" "private-db1" {
+    subnet_id = "${aws_subnet.private-db1.id}"
+    route_table_id = "${aws_route_table.private-db.id}"
+}
+
+resource "aws_route_table_association" "private-db2" {
+    subnet_id = "${aws_subnet.private-db2.id}"
+    route_table_id = "${aws_route_table.private-db.id}"
 }

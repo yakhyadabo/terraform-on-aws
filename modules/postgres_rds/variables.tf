@@ -3,12 +3,12 @@ variable "vpc_id" {
   description = "Our default RDS virtual private cloud (rds_vpc)."
 }
 
-variable "subnet_1_cidr" {
+variable "private-db1_cidr" {
   default     = "10.0.11.0/24"
   description = "Your AZ"
 }
 
-variable "subnet_2_cidr" {
+variable "private-db2_cidr" {
   default     = "10.0.12.0/24"
   description = "Your AZ"
 }
@@ -29,7 +29,7 @@ variable "az_2" {
 #   description = "The public subnets of our RDS VPC rds-vpc."
 # }
 
-# variable "rds_public_subnet_group" {  
+# variable "rds_public_private-dbgroup" {  
 #   default = "default-vpc-XXXXXXXX"
 #   description = "Apparently the group name, according to the RDS launch wizard."
 # }
