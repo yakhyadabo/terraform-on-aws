@@ -19,13 +19,35 @@ resource "aws_db_instance" "wordpress" {
   vpc_security_group_ids   = ["${aws_security_group.mydb1.id}"]
 }
 
-## resource "aws_route53_record" "database" {
-##   zone_id = "${aws_route53_zone.primary.zone_id}"
-##   name = "database.example.com"
-##   type = "CNAME"
-##   ttl = "300"
-##   records = ["${aws_db_instance.mydb.address}"]
-## }
+
+resource "aws_route53_zone" "internal" {
+  name = "internal.com"
+  vpc_id  = "${var.vpc_id}"
+}
+
+resource "aws_route53_record" "internal-ns" {
+  zone_id = "${aws_route53_zone.internal.zone_id}"
+  name = "internal.com"
+  type = "NS"
+  ttl = 30
+
+  records = [
+    "${aws_route53_zone.internal.name_servers.0}",
+    "${aws_route53_zone.internal.name_servers.1}",
+    "${aws_route53_zone.internal.name_servers.2}",
+    "${aws_route53_zone.internal.name_servers.3}",
+  ]
+
+  depends_on = ["aws_route53_zone.internal"]
+}
+
+resource "aws_route53_record" "wordpress-db" {
+  zone_id = "${aws_route53_zone.internal.zone_id}"
+  name = "db.internal.com"
+  type = "CNAME"
+  ttl = "300"
+  records = ["${aws_db_instance.wordpress.address}"]
+}
 
 
 resource "aws_security_group" "mydb1" {  
