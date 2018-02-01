@@ -7,6 +7,11 @@ variable "region" {
     default = "us-west-2"
 }
 
+variable "az_count" {
+  description = "Number of AZs to cover in a given AWS region"
+  default     = "2"
+}
+
 variable "key_name" {
     description = "Name of the keypair to use in EC2."
     default = "terraform"

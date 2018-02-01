@@ -34,12 +34,12 @@ module "internal" {
   source = "modules/asg"
 
   vpc_id = "${module.vpc.id}"
-  subnet_id = "${module.vpc.private_network_id}"
-  elb_subnets = ["${module.vpc.public_network_id}"]
+  subnet_ids = ["${module.vpc.private_network_ids}"]
+  elb_subnets = ["${module.vpc.public_network_ids}"]
   sg_web = "${module.sec-group.sg_web}"
 
-  # min_instances_size = 5
-  # max_instances_size = 10
+  min_instances_size = 4
+  max_instances_size = 4
   # server_port = 8080
   # public_elb_sec_group = ["${module.sec-group.public_elb_sec_group}", "${module.sec-group.sg_default}"]
   public_elb_sec_group = ["${module.sec-group.public_elb_sec_group}"]
@@ -51,13 +51,13 @@ module "sec-group" {
   source = "modules/sec_group"
 
   vpc_id = "${module.vpc.id}"
-  subnet_id = "${module.vpc.public_network_id}"
+  subnet_id = "${module.vpc.public_network_ids}"
   allowed_network = "${var.allowed_network}"
 }
 
 
-module "wordpress_db" {
-  source = "modules/postgres_rds"
-
-  vpc_id = "${module.vpc.id}"
-}
+# module "wordpress_db" {
+#   source = "modules/postgres_rds"
+# 
+#   vpc_id = "${module.vpc.id}"
+# }

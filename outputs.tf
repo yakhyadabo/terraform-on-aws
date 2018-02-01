@@ -10,12 +10,12 @@ output "gateway_id" {
   value = "${module.vpc.gateway}"
 }
 
-output "private_network_id" {
-  value = "${module.vpc.private_network_id}"
+output "private_network_ids" {
+  value = "${module.vpc.private_network_ids}"
 }
 
-output "public_network_id" {
-  value = "${module.vpc.public_network_id}"
+output "public_network_ids" {
+  value = "${module.vpc.public_network_ids}"
 }
 
 output "public_elb_sec_group" {
