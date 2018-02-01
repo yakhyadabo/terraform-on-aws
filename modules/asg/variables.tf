@@ -39,7 +39,10 @@ variable "centos7_amis" {
 variable "vpc_id" {description =  "VPC ID" }
 variable "elb_suffix" {description =  "ELB Suffix" }
 
-variable "subnet_id" {description =  "SUBNET ID"}
+variable "subnet_ids" {
+  description =  "SUBNETS IDS"
+  type = "list"
+}
 variable "elb_subnets" {
   description =  "SUBNET ID"
   type = "list"
