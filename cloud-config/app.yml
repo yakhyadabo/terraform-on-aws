@@ -6,7 +6,7 @@ runcmd:
   # - sudo yum install -y ansible > /tmp/ansible.log
 
 # Install docker
-  - sudo yum install -y docker
+  - sudo yum install -y docker > /tmp/docker.log
   - sudo systemctl start docker
 
 # Run nginx
