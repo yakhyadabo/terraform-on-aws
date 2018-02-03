@@ -3,6 +3,9 @@ default: plan
 plan: 
 	@terraform plan 
 
+format: 
+	@terraform fmt
+
 apply: 
 	@terraform apply
 
