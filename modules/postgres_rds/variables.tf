@@ -1,5 +1,5 @@
-variable "vpc_id" {  
-  default = "vpc-XXXXXXXX"
+variable "vpc_id" {
+  default     = "vpc-XXXXXXXX"
   description = "Our default RDS virtual private cloud (rds_vpc)."
 }
 
@@ -23,13 +23,14 @@ variable "az_2" {
   description = "Your Az2, use AWS CLI to find your account specific"
 }
 
-
 # variable "subnets_ids" {  
 #   type = "list"
 #   description = "The public subnets of our RDS VPC rds-vpc."
 # }
 
+
 # variable "rds_public_private-dbgroup" {  
 #   default = "default-vpc-XXXXXXXX"
 #   description = "Apparently the group name, according to the RDS launch wizard."
 # }
+

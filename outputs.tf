@@ -3,7 +3,7 @@ output "vpc_id" {
 }
 
 output "bastion_ip" {
-    value = "${module.vpc.bastion_ip}"
+  value = "${module.vpc.bastion_ip}"
 }
 
 output "gateway_id" {

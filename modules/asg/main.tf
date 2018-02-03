@@ -1,53 +1,57 @@
 resource "aws_launch_configuration" "cfgmt" {
-    connection {
-        user = "centos"
-        private_key = "${var.key_path}"
-    }
+  connection {
+    user        = "centos"
+    private_key = "${var.key_path}"
+  }
 
-    key_name = "${var.key_name}"
-    image_id = "${lookup(var.centos7_amis, var.region)}"
-    instance_type = "t2.micro"
-    user_data = "${file("cloud-config/app.yml")}"
-    security_groups = [ "${var.bastion_host_ssh_sec_group}", "${var.sg_web}" ]
+  key_name        = "${var.key_name}"
+  image_id        = "${lookup(var.centos7_amis, var.region)}"
+  instance_type   = "t2.micro"
+  user_data       = "${file("cloud-config/app.yml")}"
+  security_groups = ["${var.bastion_host_ssh_sec_group}", "${var.sg_web}"]
 
-    lifecycle {
-        create_before_destroy = true
-    }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_autoscaling_group" "cfgmt" {
   launch_configuration = "${aws_launch_configuration.cfgmt.id}"
+
   #_load_balancers = ["${aws_elb.cfgmt.name}"]
   target_group_arns = ["${aws_lb_target_group.web_server.arn}"]
+
   # vpc_zone_identifier = ["${var.elb_subnets}"]
   vpc_zone_identifier = ["${var.subnet_ids}"]
-  min_size = "${var.min_instances_size}"
-  max_size = "${var.max_instances_size}"
+  min_size            = "${var.min_instances_size}"
+  max_size            = "${var.max_instances_size}"
+
   tag {
-    key = "Name"
-    value = "terraform-asg-cfgmt"
+    key                 = "Name"
+    value               = "terraform-asg-cfgmt"
     propagate_at_launch = true
   }
 }
 
 resource "aws_lb" "web_server" {
   security_groups = ["${var.public_elb_sec_group}"]
-  subnets = ["${var.elb_subnets}"]
+  subnets         = ["${var.elb_subnets}"]
 
   tags = {
-    Name = "Load Balancer"
+    Name      = "Load Balancer"
     Terraform = true
   }
 }
 
 resource "aws_lb_target_group" "web_server" {
   # port = 80
-  port = "${var.server_port}"
+  port     = "${var.server_port}"
   protocol = "HTTP"
-  vpc_id = "${var.vpc_id}"
+  vpc_id   = "${var.vpc_id}"
 
   tags {
     Name = "Web Target Group"
+
     # Name = "${var.name} Web Target Group"
     Terraform = true
   }
@@ -55,15 +59,14 @@ resource "aws_lb_target_group" "web_server" {
 
 resource "aws_lb_listener" "web_server" {
   load_balancer_arn = "${aws_lb.web_server.arn}"
-  port = "80"
-  protocol = "HTTP"
+  port              = "80"
+  protocol          = "HTTP"
 
   default_action {
     target_group_arn = "${aws_lb_target_group.web_server.arn}"
-    type = "forward"
+    type             = "forward"
   }
 }
-
 
 # resource "aws_elb" "cfgmt" {
 #   name = "terraform-asg-${var.elb_suffix}"
@@ -97,3 +100,4 @@ resource "aws_lb_listener" "web_server" {
 #   ##   instance_protocol = "http"
 #   ## }
 # }
+

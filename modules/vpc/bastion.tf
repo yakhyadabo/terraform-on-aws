@@ -1,27 +1,31 @@
 resource "aws_instance" "bastion" {
-    connection {
-        user = "centos"
-        private_key = "${var.key_path}"
-    }
-    ami = "${lookup(var.centos7_amis, var.region)}"
-    instance_type = "t2.micro"
-    key_name = "${var.key_name}"
-    security_groups = [
-        "${var.sg_default}",
-        "${var.sg_nat}"
-    ]
-    subnet_id = "${aws_subnet.dmz.id}"
-    # associate_public_ip_address = true
+  connection {
+    user        = "centos"
+    private_key = "${var.key_path}"
+  }
 
-# source_dest_check - (Optional) Controls if traffic is routed to the instance when the destination address does not match 
-# the instance. Used for NAT or VPNs. Defaults true.
+  ami           = "${lookup(var.centos7_amis, var.region)}"
+  instance_type = "t2.micro"
+  key_name      = "${var.key_name}"
 
-    source_dest_check = false
-    tags = {
-        Name = "bastion"
-        subnet = "dmz"
-        role = "bastion"
-        environment = "test"
-    }
+  security_groups = [
+    "${var.sg_default}",
+    "${var.sg_nat}",
+  ]
+
+  subnet_id = "${aws_subnet.dmz.id}"
+
+  # associate_public_ip_address = true
+
+
+  # source_dest_check - (Optional) Controls if traffic is routed to the instance when the destination address does not match 
+  # the instance. Used for NAT or VPNs. Defaults true.
+
+  source_dest_check = false
+  tags = {
+    Name        = "bastion"
+    subnet      = "dmz"
+    role        = "bastion"
+    environment = "test"
+  }
 }
-
