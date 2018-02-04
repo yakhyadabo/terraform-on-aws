@@ -37,10 +37,10 @@ variable "centos7_amis" {
   }
 }
 
-variable "sg_default" {
-  description = "Default Security Group"
-}
-
-variable "sg_nat" {
-  description = "Nat Security Group"
-}
+## variable "sg_default" {
+##   description = "Default Security Group"
+## }
+## 
+## variable "sg_nat" {
+##   description = "Nat Security Group"
+## }

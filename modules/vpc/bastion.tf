@@ -9,8 +9,8 @@ resource "aws_instance" "bastion" {
   key_name      = "${var.key_name}"
 
   security_groups = [
-    "${var.sg_default}",
-    "${var.sg_nat}",
+    "${aws_security_group.default.id}",
+    "${aws_security_group.bastion.id}"
   ]
 
   subnet_id = "${aws_subnet.dmz.id}"
