@@ -15,10 +15,10 @@ output "bastion_ip" {
 #   #value = "${aws_security_group.allow_bastion.id}"
 # }
 
-output "private_network_ids" {
+output "private_subnet_ids" {
   value = ["${aws_subnet.private.*.id}"]
 }
 
-output "public_network_ids" {
+output "public_subnet_ids" {
   value = ["${aws_subnet.public.*.id}"]
 }

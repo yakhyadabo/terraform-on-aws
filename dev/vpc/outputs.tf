@@ -10,10 +10,10 @@ output "gateway_id" {
   value = "${module.vpc.gateway}"
 }
 
-output "private_network_ids" {
-  value = "${module.vpc.private_network_ids}"
+output "private_subnet_ids" {
+  value = "${module.vpc.private_subnet_ids}"
 }
 
-output "public_network_ids" {
-  value = "${module.vpc.public_network_ids}"
+output "public_subnet_ids" {
+  value = "${module.vpc.public_subnet_ids}"
 }
