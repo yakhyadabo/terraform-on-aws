@@ -1,6 +1,6 @@
 resource "aws_security_group" "lb" {
   name   = "terraform-cfgmt-elb"
-  vpc_id = "${data.terraform_remote_state.vpc.id}"
+  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
 
   egress {
     from_port   = 0
@@ -21,7 +21,7 @@ resource "aws_security_group" "lb" {
 resource "aws_security_group" "ssh" {
   name        = "bastion_host_ssh"
   description = "Security Group that alows SSH from bastion host"
-  vpc_id = "${data.terraform_remote_state.vpc.id}"
+  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
 
   ingress {
     from_port   = 22
@@ -64,7 +64,7 @@ resource "aws_security_group" "ssh" {
 resource "aws_security_group" "web" {
   name        = "web-sg"
   description = "Security group for web that allows web traffic from internet"
-  vpc_id = "${data.terraform_remote_state.vpc.id}"
+  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
 
   ingress {
     from_port   = 8080                       # HTTP

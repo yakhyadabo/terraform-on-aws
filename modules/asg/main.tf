@@ -16,7 +16,7 @@ resource "aws_launch_configuration" "cfgmt" {
   key_name        = "${var.key_name}"
   image_id        = "${lookup(var.centos7_amis, var.region)}"
   instance_type   = "t2.micro"
-  user_data       = "${file("cloud-config/app.yml")}"
+  user_data       = "${file("${path.module}/cloud-config/app.yml")}"
   security_groups = ["${aws_security_group.ssh.id}", "${aws_security_group.web.id}"]
 
   lifecycle {
@@ -53,7 +53,7 @@ resource "aws_lb" "web_server" {
 resource "aws_lb_target_group" "web_server" {
   port     = "${var.server_port}"
   protocol = "HTTP"
-  vpc_id = "${data.terraform_remote_state.vpc.id}"
+  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
 
   tags {
     Name = "Web Target Group"
