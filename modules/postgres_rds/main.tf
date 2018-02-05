@@ -1,3 +1,12 @@
+data "terraform_remote_state" "vpc" {
+  backend = "s3"
+  config {
+    bucket = "terraform-remote-state-zeta-dev"
+    key = "dev/vpc.tfstate"    
+    region = "us-west-2"
+  }
+}
+
 resource "aws_db_instance" "wordpress" {
   name                    = "wordpress"
   identifier              = "wordpress"
@@ -22,7 +31,7 @@ resource "aws_db_instance" "wordpress" {
 
 resource "aws_route53_zone" "internal" {
   name   = "internal.com"
-  vpc_id = "${var.vpc_id}"
+  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
 }
 
 resource "aws_route53_record" "internal-ns" {
@@ -51,9 +60,8 @@ resource "aws_route53_record" "wordpress-db" {
 
 resource "aws_security_group" "mydb1" {
   name = "mydb1"
-
+  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
   description = "RDS postgres servers (terraform-managed)"
-  vpc_id      = "${var.vpc_id}"
 
   # Only postgres in
   ingress {
@@ -81,44 +89,5 @@ resource "aws_security_group" "mydb1" {
 
 resource "aws_db_subnet_group" "wordpress-pgsql" {
   name       = "wordpress-pgsql"
-  subnet_ids = ["${aws_subnet.private-db1.id}", "${aws_subnet.private-db2.id}"]
-}
-
-resource "aws_subnet" "private-db1" {
-  vpc_id            = "${var.vpc_id}"
-  cidr_block        = "${var.private-db1_cidr}"
-  availability_zone = "${var.az_1}"
-
-  tags {
-    Name = "main_subnet1"
-  }
-}
-
-resource "aws_subnet" "private-db2" {
-  vpc_id            = "${var.vpc_id}"
-  cidr_block        = "${var.private-db2_cidr}"
-  availability_zone = "${var.az_2}"
-
-  tags {
-    Name = "main_subnet2"
-  }
-}
-
-resource "aws_route_table" "private-db" {
-  vpc_id = "${var.vpc_id}"
-
-  #  route {
-  #      cidr_block = "0.0.0.0/0"
-  #      instance_id = "${aws_instance.bastion.id}"
-  #  }
-}
-
-resource "aws_route_table_association" "private-db1" {
-  subnet_id      = "${aws_subnet.private-db1.id}"
-  route_table_id = "${aws_route_table.private-db.id}"
-}
-
-resource "aws_route_table_association" "private-db2" {
-  subnet_id      = "${aws_subnet.private-db2.id}"
-  route_table_id = "${aws_route_table.private-db.id}"
+  subnet_ids = ["${data.terraform_remote_state.vpc.private_subnet_ids}"]
 }
