@@ -38,6 +38,13 @@ resource "aws_security_group" "ssh" {
   ## }
 
   egress {
+    from_port   = 5432            ## Connection to Postgres DB
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
     from_port   = 80            ## Enable curl http
     to_port     = 80
     protocol    = "tcp"
