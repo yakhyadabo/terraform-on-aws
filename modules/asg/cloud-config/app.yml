@@ -1,9 +1,4 @@
-#cloud-config
-## Cloud config for application servers 
-#
 runcmd:
-  # - sudo yum install -y epel-release
-  # - sudo yum install -y ansible > /tmp/ansible.log
 
 # Install docker
   - sudo yum install -y docker > /tmp/docker.log
@@ -15,5 +10,5 @@ runcmd:
 
 # Run Postgres
 # - sudo docker run --name wordpressdb -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=wordpress -d mysql:5.7
-#  - sudo docker run --rm --name wordpress -e WORDPRESS_DB_PASSWORD=password -p 8080:80  --link wordpressdb:mysql  wordpress 
+# - sudo docker run --rm --name wordpress -e WORDPRESS_DB_HOST=db.internal.com -e WORDPRESS_DB_NAME=wordpress -e WORDPRESS_DB_USER=wordpresss -e WORDPRESS_DB_PASSWORD=badpassword -p 8080:80  wordpress 
 
