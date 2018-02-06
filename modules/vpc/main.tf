@@ -39,7 +39,9 @@ resource "aws_internet_gateway" "gateway" {
 
 resource "aws_subnet" "dmz" {
   vpc_id                  = "${aws_vpc.test.id}"
-  cidr_block              = "10.0.201.0/24"
+  count  = "${var.az_count}"
+  cidr_block              = "${cidrsubnet(aws_vpc.test.cidr_block, 8, count.index)}"
+  availability_zone       = "${data.aws_availability_zones.available.names[count.index]}"
   map_public_ip_on_launch = true
 }
 
@@ -53,7 +55,9 @@ resource "aws_route_table" "dmz" {
 }
 
 resource "aws_route_table_association" "dmz" {
-  subnet_id      = "${aws_subnet.dmz.id}"
+  count  = "${var.az_count}"
+  # subnet_id      = "${aws_subnet.dmz.id}"
+  subnet_id      = "${element(aws_subnet.dmz.*.id, count.index)}"
   route_table_id = "${aws_route_table.dmz.id}"
 }
 
@@ -65,8 +69,7 @@ resource "aws_subnet" "public" {
   vpc_id = "${aws_vpc.test.id}"
   count  = "${var.az_count}"
 
-  # cidr_block        = "${cidrsubnet(aws_vpc.test.cidr_block, 8, count.index)}"
-  cidr_block              = "${cidrsubnet(cidrsubnet(aws_vpc.test.cidr_block, 1, 0), 7, count.index)}"
+  cidr_block              = "${cidrsubnet(aws_vpc.test.cidr_block, 8, count.index + 2)}"
   availability_zone       = "${data.aws_availability_zones.available.names[count.index]}"
   map_public_ip_on_launch = true
 }
@@ -93,7 +96,7 @@ resource "aws_route_table_association" "public" {
 resource "aws_subnet" "private" {
   count                   = "${var.az_count}"
   vpc_id                  = "${aws_vpc.test.id}"
-  cidr_block              = "${cidrsubnet(cidrsubnet(aws_vpc.test.cidr_block, 1, 1), 7, count.index)}"
+  cidr_block              = "${cidrsubnet(aws_vpc.test.cidr_block, 8, count.index + 4)}"
   map_public_ip_on_launch = false
   availability_zone       = "${data.aws_availability_zones.available.names[count.index]}"
 }

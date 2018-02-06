@@ -6,8 +6,12 @@ output "gateway" {
   value = "${aws_internet_gateway.gateway.id}"
 }
 
-output "bastion_ip" {
-  value = "${aws_instance.bastion.public_ip}"
+output "bastion_ips" {
+  value = ["${aws_instance.bastion.*.public_ip}"]
+}
+
+output "bastion_cidrs" {
+  value = ["${aws_subnet.dmz.*.cidr_block}"]
 }
 
 # output "bastion_sg"{

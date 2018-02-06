@@ -1,4 +1,7 @@
 resource "aws_instance" "bastion" {
+  count  = "${var.az_count}"
+  subnet_id      = "${element(aws_subnet.dmz.*.id, count.index)}"
+
   connection {
     user        = "centos"
     private_key = "${var.key_path}"
@@ -13,7 +16,7 @@ resource "aws_instance" "bastion" {
     "${aws_security_group.bastion.id}"
   ]
 
-  subnet_id = "${aws_subnet.dmz.id}"
+##   subnet_id = "${aws_subnet.dmz.id}"
 
   # associate_public_ip_address = true
 
