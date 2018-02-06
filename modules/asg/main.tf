@@ -1,12 +1,3 @@
-data "terraform_remote_state" "vpc" {
-  backend = "s3"
-  config {
-    bucket = "terraform-remote-state-zeta-dev"
-    key = "dev/vpc.tfstate"    
-    region = "us-west-2"
-  }
-}
-
 resource "aws_launch_configuration" "cfgmt" {
   connection {
     user        = "centos"
@@ -29,7 +20,7 @@ resource "aws_autoscaling_group" "cfgmt" {
 
   target_group_arns = ["${aws_lb_target_group.web_server.arn}"]
 
-  vpc_zone_identifier   = ["${data.terraform_remote_state.vpc.private_subnet_ids}"]
+  vpc_zone_identifier   = ["${var.private_subnet_ids}"]
   min_size            = "${var.min_instances_size}"
   max_size            = "${var.max_instances_size}"
 
@@ -42,7 +33,7 @@ resource "aws_autoscaling_group" "cfgmt" {
 
 resource "aws_lb" "web_server" {
   security_groups = ["${aws_security_group.lb.id}"]
-  subnets         = ["${data.terraform_remote_state.vpc.public_subnet_ids}"]
+  subnets         = ["${var.public_subnet_ids}"]
 
   tags = {
     Name      = "Load Balancer"
@@ -53,7 +44,7 @@ resource "aws_lb" "web_server" {
 resource "aws_lb_target_group" "web_server" {
   port     = "${var.server_port}"
   protocol = "HTTP"
-  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
+  vpc_id = "${var.vpc_id}"
 
   tags {
     Name = "Web Target Group"

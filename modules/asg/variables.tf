@@ -1,3 +1,23 @@
+variable "vpc_id" {
+  default     = "vpc-XXXXXXXX"
+  description = "Our default RDS virtual private cloud (rds_vpc)."
+}
+
+variable "private_subnet_ids" {
+  description = "Ids of the private sunbets used to run ASG"
+  type = "list"
+}
+
+variable "public_subnet_ids" {
+  description = "Ids of the public sunbets used by the LB"
+  type = "list"
+}
+
+variable "bastion_cidrs" {
+  description = "Cidrs of the bastion hosts"
+  type = "list"
+}
+
 # variable "access_key" {
 #     description = "AWS access key."
 # }
