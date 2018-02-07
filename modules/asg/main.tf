@@ -1,13 +1,13 @@
 # Docker installation startup file
 data "template_file" "docker_install" {
-#  template = "${file("${path.module}/cloud-init/app.yml")}"
-   template = <<-EOF
-               #!/bin/bash
-               echo "Test test tes " > /tmp/test.text
-               sudo yum install -y docker > /tmp/docker.log
-               sudo systemctl start docker
-               sudo docker run -d --name nginx -p 8080:80 nginx
-               EOF
+    template = "${file("${path.module}/script/user_data.sh")}"
+#   template = <<-EOF
+#               #!/bin/bash
+#               echo "Test test tes " > /tmp/test.text
+#               sudo yum install -y docker > /tmp/docker.log
+#               sudo systemctl start docker
+#               sudo docker run -d --name nginx -p 8080:80 nginx
+#               EOF
   # vars {
   #   # username = "${var.username}"
   #   # password = "${var.password}"
