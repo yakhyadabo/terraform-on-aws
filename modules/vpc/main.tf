@@ -39,7 +39,7 @@ resource "aws_internet_gateway" "gateway" {
 
 resource "aws_subnet" "dmz" {
   vpc_id                  = "${aws_vpc.test.id}"
-  count  = "${var.az_count}"
+  count                   = "${var.az_count}"
   cidr_block              = "${cidrsubnet(aws_vpc.test.cidr_block, 8, count.index)}"
   availability_zone       = "${data.aws_availability_zones.available.names[count.index]}"
   map_public_ip_on_launch = true
@@ -55,7 +55,8 @@ resource "aws_route_table" "dmz" {
 }
 
 resource "aws_route_table_association" "dmz" {
-  count  = "${var.az_count}"
+  count = "${var.az_count}"
+
   # subnet_id      = "${aws_subnet.dmz.id}"
   subnet_id      = "${element(aws_subnet.dmz.*.id, count.index)}"
   route_table_id = "${aws_route_table.dmz.id}"

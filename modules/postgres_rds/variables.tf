@@ -5,7 +5,7 @@ variable "vpc_id" {
 
 variable "subnet_ids" {
   description = "Ids of the sunbets"
-  type = "list"
+  type        = "list"
 }
 
 variable "zone_id" {

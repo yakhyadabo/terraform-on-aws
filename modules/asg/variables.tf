@@ -5,17 +5,17 @@ variable "vpc_id" {
 
 variable "private_subnet_ids" {
   description = "Ids of the private sunbets used to run ASG"
-  type = "list"
+  type        = "list"
 }
 
 variable "public_subnet_ids" {
   description = "Ids of the public sunbets used by the LB"
-  type = "list"
+  type        = "list"
 }
 
 variable "bastion_cidrs" {
   description = "Cidrs of the bastion hosts"
-  type = "list"
+  type        = "list"
 }
 
 # variable "access_key" {

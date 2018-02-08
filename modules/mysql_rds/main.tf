@@ -4,9 +4,9 @@ resource "aws_db_instance" "mysql" {
   username                = "wordpress"
   password                = "password"
   port                    = 3306
-  allocated_storage       = 10                                         # gigabytes
+  allocated_storage       = 10                                # gigabytes
   db_subnet_group_name    = "${aws_db_subnet_group.mysql.id}"
-  backup_retention_period = 7                                           # in days
+  backup_retention_period = 7                                 # in days
   engine                  = "mysql"
   engine_version          = "5.7.19"
   instance_class          = "db.r3.large"
@@ -28,8 +28,8 @@ resource "aws_route53_record" "mysql-db" {
 }
 
 resource "aws_security_group" "mysql" {
-  name = "wordpress"
-  vpc_id = "${var.vpc_id}"
+  name        = "wordpress"
+  vpc_id      = "${var.vpc_id}"
   description = "RDS mysql servers (terraform-managed)"
 
   # Only mysql in

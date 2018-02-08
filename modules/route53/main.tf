@@ -1,5 +1,5 @@
 resource "aws_route53_zone" "main" {
-  name    = "zeta.com"
+  name   = "zeta.com"
   vpc_id = "${var.vpc_id}"
 }
 

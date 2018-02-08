@@ -77,5 +77,5 @@ resource "aws_security_group" "bastion" {
   }
   tags {
     Name = "nat-sg"
-}
   }
+}

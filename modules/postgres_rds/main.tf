@@ -4,9 +4,9 @@ resource "aws_db_instance" "postgres" {
   username                = "postgres"
   password                = "password"
   port                    = 5432
-  allocated_storage       = 256                                         # gigabytes
+  allocated_storage       = 256                                        # gigabytes
   db_subnet_group_name    = "${aws_db_subnet_group.postgres-pgsql.id}"
-  backup_retention_period = 7                                           # in days
+  backup_retention_period = 7                                          # in days
   engine                  = "postgres"
   engine_version          = "9.5.4"
   instance_class          = "db.r3.large"
@@ -14,7 +14,7 @@ resource "aws_db_instance" "postgres" {
 
   publicly_accessible    = false
   skip_final_snapshot    = true
-  storage_encrypted      = true                               # you should always do this
+  storage_encrypted      = true                                  # you should always do this
   storage_type           = "gp2"
   vpc_security_group_ids = ["${aws_security_group.postgres.id}"]
 }
@@ -28,8 +28,8 @@ resource "aws_route53_record" "postgres-db" {
 }
 
 resource "aws_security_group" "postgres" {
-  name = "postgres"
-  vpc_id = "${var.vpc_id}"
+  name        = "postgres"
+  vpc_id      = "${var.vpc_id}"
   description = "RDS postgres servers (terraform-managed)"
 
   # Only postgres in
@@ -40,8 +40,8 @@ resource "aws_security_group" "postgres" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress { ## TODO : Remove
-    from_port   = 22
+  ingress {
+    from_port   = 22                ## TODO : Remove
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["10.0.201.0/24"] ## Bation host IP

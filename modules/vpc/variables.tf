@@ -44,3 +44,4 @@ variable "centos7_amis" {
 ## variable "sg_nat" {
 ##   description = "Nat Security Group"
 ## }
+

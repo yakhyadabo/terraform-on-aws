@@ -21,14 +21,15 @@ resource "aws_security_group" "lb" {
 resource "aws_security_group" "ssh" {
   name        = "bastion_host_ssh"
   description = "Security Group that alows SSH from bastion host"
-  vpc_id = "${var.vpc_id}"
+  vpc_id      = "${var.vpc_id}"
 
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+
     # cidr_blocks = ["10.0.201.0/24"] ## Bation host IP
-    cidr_blocks= ["${var.bastion_cidrs}"]
+    cidr_blocks = ["${var.bastion_cidrs}"]
   }
 
   ## ingress { # OpenVPN
@@ -39,40 +40,35 @@ resource "aws_security_group" "ssh" {
   ## }
 
   egress {
-    from_port   = 5432            ## Connection to Postgres DB
+    from_port   = 5432          ## Connection to Postgres DB
     to_port     = 5432
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   egress {
-    from_port   = 3306            ## Connection to MySQL DB
+    from_port   = 3306          ## Connection to MySQL DB
     to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   egress {
     from_port   = 80            ## Enable curl http
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   egress {
     from_port   = 8080                       ## Test connections //TODO Remove
     to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["${var.allowed_network}"]
   }
-
   egress {
     from_port   = 443           ## Enable curl httpS
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   tags {
     Name = "nat-airpair-example"
   }
@@ -82,7 +78,7 @@ resource "aws_security_group" "ssh" {
 resource "aws_security_group" "web" {
   name        = "web-sg"
   description = "Security group for web that allows web traffic from internet"
-  vpc_id = "${var.vpc_id}"
+  vpc_id      = "${var.vpc_id}"
 
   ingress {
     from_port   = 8080                       # HTTP

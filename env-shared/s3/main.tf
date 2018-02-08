@@ -12,7 +12,7 @@ resource "aws_s3_bucket" "bucket" {
   }
 
   tags {
-    application   = "${var.application}"
-    environment   = "${var.environment}"
+    application = "${var.application}"
+    environment = "${var.environment}"
   }
 }

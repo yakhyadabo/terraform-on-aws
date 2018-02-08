@@ -4,17 +4,17 @@ variable "bucket_name" {
 
 variable "versioning" {
   description = "Enable versioning"
-  default = true
+  default     = true
 }
 
 variable "environment" {
   description = "Environment"
-  default = "DEV"
+  default     = "DEV"
 }
 
 variable "application" {
   description = "Application"
-  default = "Zeta Workshop"
+  default     = "Zeta Workshop"
 }
 
 variable "region" {

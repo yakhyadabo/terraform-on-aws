@@ -1,19 +1,12 @@
 # Docker installation startup file
 data "template_file" "docker_install" {
-    template = "${file("${path.module}/script/user_data.sh")}"
-#   template = <<-EOF
-#               #!/bin/bash
-#               echo "Test test tes " > /tmp/test.text
-#               sudo yum install -y docker > /tmp/docker.log
-#               sudo systemctl start docker
-#               sudo docker run -d --name nginx -p 8080:80 nginx
-#               EOF
+  template = "${file("${path.module}/script/user_data.sh")}"
+
   # vars {
   #   # username = "${var.username}"
   #   # password = "${var.password}"
   # }
 }
-
 
 resource "aws_launch_configuration" "cfgmt" {
   connection {
@@ -21,9 +14,9 @@ resource "aws_launch_configuration" "cfgmt" {
     private_key = "${var.key_path}"
   }
 
-  key_name        = "${var.key_name}"
-  image_id        = "${lookup(var.centos7_amis, var.region)}"
-  instance_type   = "t2.micro"
+  key_name      = "${var.key_name}"
+  image_id      = "${lookup(var.centos7_amis, var.region)}"
+  instance_type = "t2.micro"
   user_data     = "${data.template_file.docker_install.rendered}"
 
   security_groups = ["${aws_security_group.ssh.id}", "${aws_security_group.web.id}"]
@@ -38,7 +31,7 @@ resource "aws_autoscaling_group" "cfgmt" {
 
   target_group_arns = ["${aws_lb_target_group.web_server.arn}"]
 
-  vpc_zone_identifier   = ["${var.private_subnet_ids}"]
+  vpc_zone_identifier = ["${var.private_subnet_ids}"]
   min_size            = "${var.min_instances_size}"
   max_size            = "${var.max_instances_size}"
 
@@ -62,7 +55,7 @@ resource "aws_lb" "web_server" {
 resource "aws_lb_target_group" "web_server" {
   port     = "${var.server_port}"
   protocol = "HTTP"
-  vpc_id = "${var.vpc_id}"
+  vpc_id   = "${var.vpc_id}"
 
   tags {
     Name = "Web Target Group"
