@@ -28,7 +28,6 @@ data "aws_ami" "centos7" {
   }
 }
 
-
 resource "aws_launch_configuration" "cfgmt" {
   connection {
     user        = "centos"

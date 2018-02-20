@@ -7,7 +7,7 @@ resource "aws_instance" "bastion" {
     private_key = "${var.key_path}"
   }
 
-  ami      = "${data.aws_ami.centos7.id}"
+  ami = "${data.aws_ami.centos7.id}"
 
   instance_type = "t2.micro"
   key_name      = "${var.key_name}"
