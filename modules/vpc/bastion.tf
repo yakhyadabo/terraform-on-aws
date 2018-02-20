@@ -7,7 +7,9 @@ resource "aws_instance" "bastion" {
     private_key = "${var.key_path}"
   }
 
-  ami           = "${lookup(var.centos7_amis, var.region)}"
+  # ami           = "${lookup(var.centos7_amis, var.region)}"
+  ami      = "${data.aws_ami.centos7.id}"
+
   instance_type = "t2.micro"
   key_name      = "${var.key_name}"
 
@@ -31,5 +33,25 @@ resource "aws_instance" "bastion" {
     subnet      = "dmz"
     role        = "bastion"
     environment = "test"
+  }
+}
+
+data "aws_ami" "centos7" {
+  owners      = ["679593333241"]
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["CentOS Linux 7 x86_64 HVM EBS *"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
   }
 }
