@@ -36,7 +36,6 @@ resource "aws_launch_configuration" "cfgmt" {
   }
 
   key_name      = "${var.key_name}"
-  # image_id      = "${lookup(var.centos7_amis, var.region)}"
   image_id      = "${data.aws_ami.centos7.id}"
   instance_type = "t2.micro"
   user_data     = "${data.template_file.docker_install.rendered}"
