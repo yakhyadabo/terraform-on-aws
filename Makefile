@@ -2,7 +2,9 @@ default: format
 
 format: 
 	@terraform fmt
-	
+
+### VPC
+
 vpc-init: 
 	@cd env-dev/vpc && terraform init
 
@@ -14,6 +16,8 @@ vpc-create:
 
 vpc-destroy: 
 	@pushd env-dev/vpc && terraform destroy
+
+### Services
 
 services-init: 
 	@cd env-dev/services && terraform init
@@ -27,9 +31,18 @@ services-create:
 services-destroy: 
 	@pushd env-dev/services && terraform destroy
 
-## init: 
-## 	@terraform init \
-##  		-backend-config="bucket=terraform-remote-state-zeta" \
-##  		-backend-config="key=dev/vpc.tfstate" \
-##  		-backend-config="region=us-west-2" \
-##  		-backend-config="encrypt=true"
+
+### DNS 
+
+dns-init: 
+	@cd env-shared/dns && terraform init
+
+dns-plan: 
+	@cd env-shared/dns && terraform plan 
+
+dns-create: 
+	@cd env-shared/dns && @terraform apply
+
+dns-destroy: 
+	@pushd env-shared/dns && terraform destroy
+
