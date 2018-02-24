@@ -15,6 +15,17 @@ vpc-create:
 vpc-destroy: 
 	@pushd env-dev/vpc && terraform destroy
 
+services-init: 
+	@cd env-dev/services && terraform init
+
+services-plan: 
+	@cd env-dev/services && terraform plan 
+
+services-create: 
+	@cd env-dev/services && @terraform apply
+
+services-destroy: 
+	@pushd env-dev/services && terraform destroy
 
 ## init: 
 ## 	@terraform init \
