@@ -15,7 +15,7 @@ vpc-create:
 	@cd env-dev/vpc && @terraform apply
 
 vpc-destroy: 
-	@pushd env-dev/vpc && terraform destroy
+	@cd env-dev/vpc && terraform destroy
 
 ### Services
 
@@ -29,7 +29,7 @@ services-create:
 	@cd env-dev/services && @terraform apply
 
 services-destroy: 
-	@pushd env-dev/services && terraform destroy
+	@cd env-dev/services && terraform destroy
 
 
 ### DNS 
@@ -44,5 +44,5 @@ dns-create:
 	@cd env-shared/dns && @terraform apply
 
 dns-destroy: 
-	@pushd env-shared/dns && terraform destroy
+	@cd env-shared/dns && terraform destroy
 
