@@ -39,13 +39,13 @@ services-destroy:
 ### DNS 
 
 dns-init: 
-	@cd env-shared/dns && terraform init
+	@cd ${SHARED}/dns && terraform init
 
 dns-plan: 
-	@cd env-shared/dns && terraform plan 
+	@cd ${SHARED}/dns && terraform plan 
 
 dns-create: 
-	@cd env-shared/dns && @terraform apply
+	@cd ${SHARED}/dns && @terraform apply
 
 dns-destroy: 
-	@cd env-shared/dns && terraform destroy
+	@cd ${SHARED}/dns && terraform destroy
