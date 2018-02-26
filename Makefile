@@ -1,35 +1,39 @@
 default: format
 
+DEV=env-dev
+
 format: 
 	@terraform fmt
 
-### VPC
+
+#### VPC ####
 
 vpc-init: 
-	@cd env-dev/vpc && terraform init
+	@cd ${DEV}/vpc && terraform init
 
 vpc-plan: 
-	@cd env-dev/vpc && terraform plan 
+	@cd ${DEV}/vpc && terraform plan 
 
 vpc-create: 
-	@cd env-dev/vpc && @terraform apply
+	@cd ${DEV}/vpc && @terraform apply
 
 vpc-destroy: 
-	@cd env-dev/vpc && terraform destroy
+	@cd ${DEV}/vpc && terraform destroy
+
 
 ### Services
 
 services-init: 
-	@cd env-dev/services && terraform init
+	@cd ${DEV}/services && terraform init
 
 services-plan: 
-	@cd env-dev/services && terraform plan 
+	@cd ${DEV}/services && terraform plan 
 
 services-create: 
-	@cd env-dev/services && @terraform apply
+	@cd ${DEV}/services && @terraform apply
 
 services-destroy: 
-	@cd env-dev/services && terraform destroy
+	@cd ${DEV}/services && terraform destroy
 
 
 ### DNS 
@@ -45,4 +49,3 @@ dns-create:
 
 dns-destroy: 
 	@cd env-shared/dns && terraform destroy
-
