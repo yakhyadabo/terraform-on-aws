@@ -36,6 +36,21 @@ services-destroy:
 	@cd ${DEV}/services && terraform destroy
 
 
+### Wordpress DB
+
+wordpress-db-init: 
+	@cd ${DEV}/storage/wordpress-db && terraform init
+
+wordpress-db-plan: 
+	@cd ${DEV}/storage/wordpress-db && terraform plan 
+
+wordpress-db-create: 
+	@cd ${DEV}/storage/wordpress-db && @terraform apply
+
+wordpress-db-destroy: 
+	@cd ${DEV}/storage/wordpress-db && terraform destroy
+
+
 ### DNS 
 
 dns-init: 
