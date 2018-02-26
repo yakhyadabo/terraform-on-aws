@@ -1,6 +1,8 @@
 default: format
 
 DEV=env-dev
+SHARED=env-shared 
+
 
 format: 
 	@terraform fmt
