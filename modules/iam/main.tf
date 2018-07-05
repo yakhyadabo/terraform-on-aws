@@ -1,6 +1,6 @@
 resource "aws_iam_user" "zeta-admin" {
-    name = "zeta-admin"
-    path = "/"
+  name = "zeta-admin"
+  path = "/"
 }
 
 resource "aws_iam_user_login_profile" "admin-login" {
@@ -17,28 +17,30 @@ resource "aws_iam_access_key" "admin-key" {
 
   user    = "${aws_iam_user.zeta-admin.name}"
   pgp_key = "${var.pgp_key}"
-
 }
 
 resource "aws_iam_group" "admin-group" {
-    name = "admin-group"
-    path = "/"
+  name = "admin-group"
+  path = "/"
 }
 
 resource "aws_iam_group_membership" "admin-user-membership" {
-    name = "admin-user-membership"
-    users = [
-        "${aws_iam_user.zeta-admin.name}",
-    ]
-    group = "${aws_iam_group.admin-group.name}"
+  name = "admin-user-membership"
+
+  users = [
+    "${aws_iam_user.zeta-admin.name}",
+  ]
+
+  group = "${aws_iam_group.admin-group.name}"
 }
 
 resource "aws_iam_group_policy" "explicit-admin" {
-    name = "explicit-admin"
-    group = "${aws_iam_group.admin-group.id}"
-    policy = <<EOF
+  name  = "explicit-admin"
+  group = "${aws_iam_group.admin-group.id}"
+
+  policy = <<EOF
 {
-  "Version": "2018-07-02",
+  "Version": "2012-10-17",
   "Statement": [
     {
       "Action": "*",
