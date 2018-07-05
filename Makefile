@@ -21,6 +21,20 @@ vpc-destroy:
 	@cd ${DEV}/vpc && terraform destroy
 
 
+### iam
+
+iam-init: 
+	@cd ${SHARED}/iam && terraform init
+
+iam-plan: 
+	@cd ${SHARED}/iam && terraform plan 
+
+iam-create: 
+	@cd ${SHARED}/iam && @terraform apply
+
+iam-destroy: 
+	@cd ${SHARED}/iam && terraform destroy
+
 ### Services
 
 services-init: 
