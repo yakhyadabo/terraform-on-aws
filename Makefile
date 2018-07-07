@@ -15,7 +15,7 @@ vpc-plan:
 	@cd ${DEV}/vpc && terraform plan 
 
 vpc-create: 
-	@cd ${DEV}/vpc && @terraform apply
+	@cd ${DEV}/vpc && terraform apply
 
 vpc-destroy: 
 	@cd ${DEV}/vpc && terraform destroy
@@ -30,7 +30,7 @@ users-plan:
 	@cd ${SHARED}/users && terraform plan 
 
 users-create: 
-	@cd ${SHARED}/users && @terraform apply
+	@cd ${SHARED}/users && terraform apply
 
 users-destroy: 
 	@cd ${SHARED}/users && terraform destroy
@@ -44,7 +44,7 @@ services-plan:
 	@cd ${DEV}/services && terraform plan 
 
 services-create: 
-	@cd ${DEV}/services && @terraform apply
+	@cd ${DEV}/services && terraform apply
 
 services-destroy: 
 	@cd ${DEV}/services && terraform destroy
@@ -59,7 +59,7 @@ wordpress-db-plan:
 	@cd ${DEV}/storage/wordpress-db && terraform plan 
 
 wordpress-db-create: 
-	@cd ${DEV}/storage/wordpress-db && @terraform apply
+	@cd ${DEV}/storage/wordpress-db && terraform apply
 
 wordpress-db-destroy: 
 	@cd ${DEV}/storage/wordpress-db && terraform destroy
@@ -74,7 +74,7 @@ dns-plan:
 	@cd ${SHARED}/dns && terraform plan 
 
 dns-create: 
-	@cd ${SHARED}/dns && @terraform apply
+	@cd ${SHARED}/dns && terraform apply
 
 dns-destroy: 
 	@cd ${SHARED}/dns && terraform destroy
