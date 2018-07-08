@@ -1,6 +1,7 @@
 resource "aws_iam_user" "zeta-admin" {
   name = "zeta-admin"
   path = "/"
+  force_destroy = true
 }
 
 resource "aws_iam_user_login_profile" "zeta-admin" {
