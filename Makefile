@@ -21,6 +21,20 @@ vpc-destroy:
 	@cd ${DEV}/vpc && terraform destroy
 
 
+#### kube-demo ####
+
+kube-demo-init: 
+	@cd ${DEV}/kube-demo && terraform init
+
+kube-demo-plan: 
+	@cd ${DEV}/kube-demo && terraform plan 
+
+kube-demo-create: 
+	@cd ${DEV}/kube-demo && terraform apply
+
+kube-demo-destroy: 
+	@cd ${DEV}/kube-demo && terraform destroy
+
 ### users
 
 users-init: 
