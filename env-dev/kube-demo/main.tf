@@ -12,7 +12,7 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
-module "kube-demo" {
+module "eks" {
   source          = "../../modules/eks"
 
   vpc_id             = "${data.terraform_remote_state.vpc.vpc_id}"
