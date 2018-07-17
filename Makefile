@@ -35,6 +35,12 @@ kube-demo-create:
 kube-demo-destroy: 
 	@cd ${DEV}/kube-demo && terraform destroy
 
+kube-demo-config: 
+	@cd ${DEV}/kube-demo && terraform output kubeconfig > ~/.kube/config
+
+kube-demo-auth: 
+	@cd ${DEV}/kube-demo && terraform output config-map-aws-auth > ~/.kube/config-map-aws-auth.yml
+
 ### users
 
 users-init: 
