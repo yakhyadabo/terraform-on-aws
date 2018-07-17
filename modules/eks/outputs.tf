@@ -42,7 +42,7 @@ users:
   user:
     exec:
       apiVersion: client.authentication.k8s.io/v1alpha1
-      command: aws-iam-authenticator
+      command: heptio-authenticator-aws
       args:
         - "token"
         - "-i"
